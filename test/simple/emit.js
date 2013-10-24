@@ -136,7 +136,24 @@ module.exports = simpleEvents({
 
     test.expect(5);
     test.done();
-  },  
+  }, 
+  '7. Stop propagation.': function (test) {
+
+    var emitter = new EventEmitter2({ verbose: true });
+
+    function functionA() { test.ok(true, 'The event was raised'); this.stop(); }
+    function functionB() { test.ok(true, 'The event was raised'); }
+
+    emitter.on('test7', functionA);
+	emitter.on('test7', functionB);
+	
+	emitter.emit('test7');
+	emitter.emit('test7');
+	
+
+    test.expect(2);
+    test.done();
+  },   
 
 });
 
